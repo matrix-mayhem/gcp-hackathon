@@ -22,3 +22,8 @@ async def upload_file(file: UploadFile):
     )
 
     return {"file_id": file_id}
+
+@app.get("/files")
+def get_files():
+    docs = db.collection("files").strea()
+    return [doc.to_dict for doc in docs]

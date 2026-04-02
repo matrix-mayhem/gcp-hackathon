@@ -38,7 +38,7 @@ gcloud builds submit --tag asia-south1-docker.pkg.dev/project-4438a580-ac32-4cf8
 
 # Backend is alive
 gcloud run deploy app \
-  --image gcr.io/YOUR_PROJECT_ID/app \
+  --image asia-south1-docker.pkg.dev/YOUR_PROJECT_ID/app \
   --platform managed \
   --allow-unauthenticated
 
