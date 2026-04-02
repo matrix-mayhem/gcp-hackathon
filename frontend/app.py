@@ -1,11 +1,28 @@
 import streamlit as st
 import requests
 
-uploaded_file = st.file_uploader("Upload file")
+st.title("📄 AI Document Analyzer")
+
+API_URL = "https://app-939090702834.asia-south1.run.app/upload"
+
+uploaded_file = st.file_uploader("Upload a file")
 
 if uploaded_file:
+    st.write("Uploading...")
+
     response = requests.post(
-        "https://app-939090702834.asia-south1.run.app/upload",
-        files={"file":uploaded_file}
+        f"{API_URL}/upload",
+        files={"file": uploaded_file}
     )
-    st.write(response.json)
+
+    if response.status_code == 200:
+        st.success("Uploaded successfully!")
+        st.json(response.json())
+    else:
+        st.error("Upload failed")
+        st.text(response.text)
+
+# Show stored files
+if st.button("Show Uploaded Files"):
+    response = requests.get(f"{API_URL}/files")
+    st.json(response.json())
