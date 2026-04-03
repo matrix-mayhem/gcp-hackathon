@@ -1,30 +1,58 @@
 from fastapi import FastAPI, UploadFile
-from google.cloud import firestore, storage
-from common.auth import verify_token
+import logging
+import os
+import uvicorn
+from google.cloud import pubsub_v1
+import json
 import uuid
 
 app = FastAPI()
 
-db = firestore.Client()
-storage_client = storage.Client()
-bucket = storage_client.bucket("mybucket")
+# Logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+publisher = pubsub_v1.PublisherClient()
+topic_path = publisher.topic_path("project-4438a580-ac32-4cf8-81c", "file-processing-topic")
+
+@app.get("/")
+def health():
+    logger.info("Upload service running")
+    return {"status": "upload service running"}
+
 
 @app.post("/upload")
 async def upload_file(file: UploadFile):
-    file_id = str(uuid)
+    file_id = str(uuid.uuid4())
 
-    blob = bucket.blob(file.filename)
-    blob.upload_from_file(file.file)
+    logger.info(f"Received file: {file.filename}")
 
-    doc_ref = db.collection("files").document(file_id)
-    doc_ref.set({
-        "filename": file.filename,
-        "status":"uploaded"}
+    # Publish event
+    publisher.publish(
+        topic_path,
+        json.dumps({"file_id": file_id}).encode()
     )
+
+    logger.info(f"Message sent for file_id: {file_id}")
 
     return {"file_id": file_id}
 
-@app.get("/files")
-def get_files():
-    docs = db.collection("files").strea()
-    return [doc.to_dict for doc in docs]
+
+#IMPORTANT: start server (same as worker)
+if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 8080))
+    uvicorn.run(app, host="0.0.0.0", port=port)
+
+# from fastapi import FastAPI
+# import os
+# import uvicorn
+
+# app = FastAPI()
+
+# @app.get("/")
+# def home():
+#     return {"status": "running"}
+
+# if __name__ == "__main__":
+#     port = int(os.environ.get("PORT", 8080))
+#     uvicorn.run(app, host="0.0.0.0", port=port)

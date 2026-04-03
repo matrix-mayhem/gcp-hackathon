@@ -1,19 +1,12 @@
 # steps:
 # - name: 'gcr.io/cloud-builders/docker'
-#   args: ['build', '-t', 'asia-south1-docker.pkg.dev/$PROJECT_ID/my-repo/app', '.']
+#   args: ['build', '-t', 'asia-south1-docker.pkg.dev/$PROJECT_ID/my-repo/upload-service', './upload-service']
 
 # - name: 'gcr.io/cloud-builders/docker'
-#   args: ['push', 'asia-south1-docker.pkg.dev/$PROJECT_ID/my-repo/app']
+#   args: ['push', 'asia-south1-docker.pkg.dev/$PROJECT_ID/my-repo/upload-service']
 
-# - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-#   args:
-#     - run
-#     - deploy
-#     - app
-#     - --image
-#     - asia-south1-docker.pkg.dev/$PROJECT_ID/my-repo/app
-#     - --region
-#     - asia-south1
-#     - --platform
-#     - managed
-#     - --allow-unauthenticated
+# - name: 'gcr.io/cloud-builders/docker'
+#   args: ['build', '-t', 'asia-south1-docker.pkg.dev/$PROJECT_ID/my-repo/worker-service', './worker-service']
+
+# - name: 'gcr.io/cloud-builders/docker'
+#   args: ['push', 'asia-south1-docker.pkg.dev/$PROJECT_ID/my-repo/worker-service']

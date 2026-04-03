@@ -1,7 +1,7 @@
 from fastapi import FastAPI, Depends, HTTPException
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 import jwt
-
+from gateway_service.main import verify_token
 app = FastAPI()
 security = HTTPBearer()
 
