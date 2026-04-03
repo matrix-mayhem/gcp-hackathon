@@ -42,3 +42,17 @@ gcloud run deploy app \
   --platform managed \
   --allow-unauthenticated
 
+# Deployed services
+gcloud run services list
+gcloud artifacts repositories list
+gcloud compute instances list
+gcloud compute instances stop INSTANCE_NAME
+gcloud sql instances list
+gcloud redis instances list
+gcloud container clusters list
+gcloud container clusters list
+gcloud run services describe SERVICE_NAME
+
+
+# Deleting services
+gcloud run services delete SERVICE_NAME --region REGION

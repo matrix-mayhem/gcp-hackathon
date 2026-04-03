@@ -4,6 +4,7 @@ WORKDIR /app
 
 COPY . .
 
-RUN pip install fastapi uvicorn google-cloud-firestore google-cloud-storage python-multipart streamlit
+RUN pip install fastapi uvicorn google-cloud-firestore google-cloud-storage python-multipart streamlit \
+    PjJWT python-jose google-cloud-secret-manager sqlalchemy
 
 CMD ["uvicorn","app.main:app","--host","0.0.0.0","--port","8080"]

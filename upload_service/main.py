@@ -1,5 +1,6 @@
 from fastapi import FastAPI, UploadFile
 from google.cloud import firestore, storage
+from common.auth import verify_token
 import uuid
 
 app = FastAPI()
